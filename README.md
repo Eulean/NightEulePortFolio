@@ -2,6 +2,11 @@
 
 Portfolio site for Wai Phyo Oo, built with Next.js.
 
+## Live site
+
+- Production: `https://nighteuleportfolio-site.vercel.app/`
+- GitHub: `https://github.com/Eulean/NightEulePortFolio`
+
 ## Stack
 
 - Next.js
@@ -48,3 +53,11 @@ Recommended:
 - import the repo into Vercel
 - set `NEXT_PUBLIC_FORMSPREE_ENDPOINT` in Vercel project environment variables
 - redeploy
+
+## Current shipped state
+
+- portfolio homepage implemented with project, services, pricing, stack, and contact sections
+- dark theme added with persistent toggle
+- Formspree contact form connected for live email delivery
+- resume PDF included in `public/files/Wai_Phyo_Oo_Resume.pdf`
+- live production deployment available on Vercel

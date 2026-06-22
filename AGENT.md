@@ -1,6 +1,6 @@
 # Portfolio Agent Notes
 
-Last updated: 2026-06-22
+Last updated: 2026-06-23
 
 ## Verified Identity
 
@@ -601,6 +601,26 @@ Recommended sections:
 - Technical Strengths: backend, frontend, database, deployment.
 - Case Study Detail: one polished deep dive for Restaurant POS.
 - Contact: email, Telegram, GitHub, remote/hybrid availability.
+
+## Current Project Status
+
+Repository:
+
+- GitHub repo: `https://github.com/Eulean/NightEulePortFolio`
+- Vercel production: `https://nighteuleportfolio-site.vercel.app/`
+
+Work completed in this workspace:
+
+- designed and implemented a modern Next.js portfolio site for Wai Phyo Oo
+- added featured projects, experience arc, freelance services, pricing preview, technical stack, and contact sections
+- created and linked a deploy-safe resume PDF in `public/files/Wai_Phyo_Oo_Resume.pdf`
+- connected the live contact form through Formspree using `NEXT_PUBLIC_FORMSPREE_ENDPOINT`
+- added a persistent dark theme toggle and production-ready styling updates
+- deployed the site to Vercel and verified the live contact form message in production
+
+Important deployment note:
+
+- Vercel required a lowercase project slug, so the deployed Vercel project name is `nighteuleportfolio-site` even though the GitHub repository name is `NightEulePortFolio`.
 
 ## Important Gaps To Fill
 
