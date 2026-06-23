@@ -43,7 +43,14 @@ The deployable resume lives at:
 ```bash
 pnpm run typecheck
 pnpm run build
+pnpm audit --audit-level moderate
 ```
+
+## Security hardening
+
+- Security headers are configured in `next.config.ts`.
+- Contact form submissions use Formspree, include a honeypot field, and limit user input lengths.
+- Dependency advisories are checked with `pnpm audit`.
 
 ## Remote job finder
 

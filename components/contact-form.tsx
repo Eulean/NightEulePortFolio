@@ -43,34 +43,52 @@ export function ContactForm() {
           }
 
           const payload = Object.fromEntries(formData.entries());
-          const response = await fetch(formspreeEndpoint, {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload),
-          });
 
-          const result = (await response.json()) as { message?: string };
-
-          if (!response.ok) {
+          if (payload.website) {
+            form.reset();
             setStatus({
-              type: "error",
+              type: "success",
               message:
-                result.message ??
-                "The inquiry could not be sent right now. Please check the form setup and try again.",
+                "Your inquiry was sent successfully. Wai will be able to reply by email.",
             });
             return;
           }
 
-          form.reset();
-          setStatus({
-            type: "success",
-            message:
-              result.message ??
-              "Your inquiry was sent successfully. Wai will be able to reply by email.",
-          });
+          try {
+            const response = await fetch(formspreeEndpoint, {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(payload),
+            });
+
+            const result = (await response.json().catch(() => ({}))) as { message?: string };
+
+            if (!response.ok) {
+              setStatus({
+                type: "error",
+                message:
+                  result.message ??
+                  "The inquiry could not be sent right now. Please check the form setup and try again.",
+              });
+              return;
+            }
+
+            form.reset();
+            setStatus({
+              type: "success",
+              message:
+                result.message ??
+                "Your inquiry was sent successfully. Wai will be able to reply by email.",
+            });
+          } catch {
+            setStatus({
+              type: "error",
+              message: "The inquiry could not be sent right now. Please try again in a moment.",
+            });
+          }
         });
       }}
     >
@@ -94,18 +112,18 @@ export function ContactForm() {
       <div className="field-grid">
         <label>
           Name
-          <input type="text" name="name" placeholder="Your name" required />
+          <input type="text" name="name" placeholder="Your name" maxLength={120} required />
         </label>
         <label>
           Email
-          <input type="email" name="email" placeholder="you@example.com" required />
+          <input type="email" name="email" placeholder="you@example.com" maxLength={160} required />
         </label>
       </div>
 
       <div className="field-grid">
         <label>
           Company or brand
-          <input type="text" name="company" placeholder="Company or project name" />
+          <input type="text" name="company" placeholder="Company or project name" maxLength={160} />
         </label>
         <label>
           Project type
@@ -134,7 +152,7 @@ export function ContactForm() {
         </label>
         <label>
           Timeline
-          <input type="text" name="timeline" placeholder="Example: 2 to 4 weeks" />
+          <input type="text" name="timeline" placeholder="Example: 2 to 4 weeks" maxLength={120} />
         </label>
       </div>
 
@@ -144,6 +162,7 @@ export function ContactForm() {
           name="details"
           rows={6}
           placeholder="Tell me what you need, what stage the project is in, and what outcome you want."
+          maxLength={3000}
           required
         />
       </label>
