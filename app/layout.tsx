@@ -29,9 +29,9 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://nighteuleportfolio-site.vercel.app"),
   applicationName: "NightEule Portfolio",
   icons: {
-    icon: "/brand/night-eule-icon.png",
-    shortcut: "/brand/night-eule-icon.png",
-    apple: "/brand/night-eule-icon.png",
+    icon: "/brand/night-eule-mark.svg",
+    shortcut: "/brand/night-eule-mark.svg",
+    apple: "/brand/night-eule-mark.svg",
   },
   keywords: [
     "Wai Phyo Oo",

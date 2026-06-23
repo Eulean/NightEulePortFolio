@@ -19,7 +19,7 @@ export default function Home() {
       <header className="site-nav">
         <a href="#top" className="brand" aria-label="NightEule home">
           <img
-            src="/brand/night-eule-wordmark.png"
+            src="/brand/night-eule-wordmark.svg"
             alt=""
             className="brand-logo"
             width="930"
