@@ -25,7 +25,7 @@ export default function Home() {
             <a href="#work">Work</a>
             <a href="#services">Services</a>
             <a href="#about">About</a>
-            <a href="/files/Wai_Phyo_Oo_Resume.pdf">Resume</a>
+            <a href="/resume">Resume</a>
             <a href="#contact">Contact</a>
           </nav>
           <ThemeToggle />
@@ -247,7 +247,10 @@ export default function Home() {
           </div>
 
           <div className="contact-actions">
-            <a href="/files/Wai_Phyo_Oo_Resume.pdf" className="button button-primary">
+            <a href="/resume" className="button button-primary">
+              View Resume
+            </a>
+            <a href="/files/Wai_Phyo_Oo_Resume.pdf" download className="button button-secondary">
               Download Resume
             </a>
             <a href="https://github.com/Eulean" className="button button-secondary">

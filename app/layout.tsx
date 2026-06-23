@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   title: "Wai Phyo Oo | Backend-Focused Full-Stack Developer",
   description:
     "Portfolio for Wai Phyo Oo, a backend-focused full-stack developer building enterprise workflows, reporting systems, modern business websites, and practical software.",
-  metadataBase: new URL("https://waiphyooo.vercel.app"),
+  metadataBase: new URL("https://nighteuleportfolio-site.vercel.app"),
   applicationName: "Wai Phyo Oo Portfolio",
   keywords: [
     "Wai Phyo Oo",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     title: "Wai Phyo Oo | Backend-Focused Full-Stack Developer",
     description:
       "Enterprise workflows, reporting systems, fast business websites, and practical full-stack software delivery.",
-    url: "https://waiphyooo.vercel.app",
+    url: "https://nighteuleportfolio-site.vercel.app",
     siteName: "Wai Phyo Oo Portfolio",
     locale: "en_US",
     type: "website",
