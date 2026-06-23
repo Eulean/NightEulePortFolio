@@ -27,7 +27,12 @@ export const metadata: Metadata = {
   description:
     "Portfolio for Wai Phyo Oo, a backend-focused full-stack developer building enterprise workflows, reporting systems, modern business websites, and practical software.",
   metadataBase: new URL("https://nighteuleportfolio-site.vercel.app"),
-  applicationName: "Wai Phyo Oo Portfolio",
+  applicationName: "NightEule Portfolio",
+  icons: {
+    icon: "/brand/night-eule-icon.png",
+    shortcut: "/brand/night-eule-icon.png",
+    apple: "/brand/night-eule-icon.png",
+  },
   keywords: [
     "Wai Phyo Oo",
     "backend developer",

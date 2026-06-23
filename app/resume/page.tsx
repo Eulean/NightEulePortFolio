@@ -76,8 +76,14 @@ export default function ResumePage() {
   return (
     <main className="portfolio-shell resume-shell">
       <header className="site-nav">
-        <a href="/" className="brand">
-          Wai Phyo Oo
+        <a href="/" className="brand" aria-label="NightEule home">
+          <img
+            src="/brand/night-eule-wordmark.png"
+            alt=""
+            className="brand-logo"
+            width="930"
+            height="250"
+          />
         </a>
         <div className="nav-actions">
           <nav>
