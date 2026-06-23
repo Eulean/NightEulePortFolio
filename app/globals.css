@@ -834,6 +834,14 @@ textarea {
   margin-top: 0.6rem;
 }
 
+.resume-contact-card .resume-actions .button-primary {
+  color: #f7faf8;
+}
+
+.resume-contact-card .resume-actions .button-secondary {
+  color: var(--ink);
+}
+
 .resume-section {
   padding-top: 3.25rem;
 }
