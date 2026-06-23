@@ -45,6 +45,18 @@ pnpm run typecheck
 pnpm run build
 ```
 
+## Remote job finder
+
+Generate a fresh remote job match report:
+
+```bash
+pnpm jobs
+```
+
+The report is written to:
+
+`jobs/remote-jobs.md`
+
 ## Deploy
 
 Recommended:

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "jobs": "node scripts/find-remote-jobs.mjs"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.3.1",
