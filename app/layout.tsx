@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Manrope, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 
@@ -72,6 +73,7 @@ export default function RootLayout({
       </head>
       <body className={`${manrope.variable} ${sourceSerif.variable}`}>
         {children}
+        <Analytics />
       </body>
     </html>
   );

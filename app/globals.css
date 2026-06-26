@@ -113,8 +113,17 @@ textarea {
   height: auto;
 }
 
-[data-theme="dark"] .brand-logo {
-  filter: drop-shadow(0 0 10px rgba(88, 178, 173, 0.16));
+.brand-logo-dark {
+  display: none;
+}
+
+[data-theme="dark"] .brand-logo-light {
+  display: none;
+}
+
+[data-theme="dark"] .brand-logo-dark {
+  display: block;
+  filter: drop-shadow(0 0 10px rgba(88, 178, 173, 0.14));
 }
 
 .nav-actions {

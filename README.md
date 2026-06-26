@@ -14,6 +14,7 @@ Portfolio site for Wai Phyo Oo, built with Next.js.
 - TypeScript
 - Tailwind CSS v4
 - Formspree for contact form delivery
+- Vercel Web Analytics for visitor tracking
 
 ## Local development
 
@@ -63,6 +64,19 @@ pnpm jobs
 The report is written to:
 
 `jobs/remote-jobs.md`
+
+## Visitor analytics
+
+Visitor tracking is wired in with Vercel Web Analytics.
+
+To see visitor counts:
+
+1. Open your Vercel project dashboard.
+2. Go to the `Analytics` section.
+3. Enable Web Analytics if it is not already enabled.
+4. Redeploy the site once after enabling it.
+
+After that, Vercel will show visitor and pageview data for the production site.
 
 ## Deploy
 

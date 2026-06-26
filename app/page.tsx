@@ -21,9 +21,17 @@ export default function Home() {
           <img
             src="/brand/night-eule-wordmark.svg"
             alt=""
-            className="brand-logo"
-            width="930"
-            height="250"
+            className="brand-logo brand-logo-light"
+            width="1028"
+            height="280"
+          />
+          <img
+            src="/brand/night-eule-wordmark-dark.svg"
+            alt=""
+            aria-hidden="true"
+            className="brand-logo brand-logo-dark"
+            width="1028"
+            height="280"
           />
         </a>
         <div className="nav-actions">
