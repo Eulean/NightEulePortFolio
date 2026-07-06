@@ -98,6 +98,7 @@ export default function ResumePage() {
             <a href="/#work">Work</a>
             <a href="/#services">Services</a>
             <a href="/#about">About</a>
+            <a href="/apply-assistant">Apply Assistant</a>
             <a href="/resume">Resume</a>
             <a href="/#contact">Contact</a>
           </nav>

@@ -96,6 +96,21 @@ const profile = {
     "web developer",
     "react developer",
     "react engineer",
+    "frontend developer",
+    "frontend engineer",
+    "javascript developer",
+    "typescript developer",
+    "application developer",
+    "web application developer",
+  ],
+  adjacentTitles: [
+    "frontend developer",
+    "frontend engineer",
+    "javascript developer",
+    "typescript developer",
+    "application developer",
+    "web application developer",
+    "ui developer",
   ],
   preferredSeniority: ["junior", "entry level", "entry-level", "associate", "mid", "mid-level", "intermediate"],
   seniorityPenalties: ["senior", "lead", "principal", "staff", "architect", "manager", "director", "head"],
@@ -120,10 +135,16 @@ const profile = {
     "ai engineer",
     "marketing",
     "seo",
+    "creative",
     "recruiter",
     "talent",
     "support engineer",
     "qa manager",
+    "qa engineer",
+    "quality engineer",
+    "quality assurance",
+    "test engineer",
+    "automation tester",
   ],
   avoidIfOnly: ["ruby", "rails", "php", "wordpress", "ios", "android", "blockchain", "swift", "flutter"],
 };
@@ -131,6 +152,7 @@ const profile = {
 const sources = [
   {
     name: "Remotive",
+    type: "json",
     url: "https://remotive.com/api/remote-jobs?limit=80",
     parse: (json) =>
       (json.jobs ?? []).map((job) => ({
@@ -146,6 +168,7 @@ const sources = [
   },
   {
     name: "Arbeitnow",
+    type: "json",
     url: "https://www.arbeitnow.com/api/job-board-api",
     parse: (json) =>
       (json.data ?? [])
@@ -163,6 +186,7 @@ const sources = [
   },
   {
     name: "RemoteOK",
+    type: "json",
     url: "https://remoteok.com/api",
     parse: (json) =>
       (Array.isArray(json) ? json.slice(1) : []).map((job) => ({
@@ -176,6 +200,90 @@ const sources = [
         postedAt: job.date,
       })),
   },
+  {
+    name: "Jobicy",
+    type: "json",
+    url: "https://jobicy.com/api/v2/remote-jobs?count=100",
+    parse: (json) =>
+      (json.jobs ?? []).map((job) => ({
+        source: "Jobicy",
+        title: job.jobTitle,
+        company: job.companyName,
+        location: job.jobGeo || "Remote",
+        url: job.url,
+        tags: [...(job.jobIndustry ?? []), ...(job.jobType ?? []), job.jobLevel].filter(Boolean),
+        description: stripHtml(job.jobDescription ?? job.jobExcerpt ?? ""),
+        postedAt: job.pubDate,
+      })),
+  },
+  {
+    name: "Jobicy Engineering",
+    type: "json",
+    url: "https://jobicy.com/api/v2/remote-jobs?count=100&industry=engineering",
+    parse: (json) =>
+      (json.jobs ?? []).map((job) => ({
+        source: "Jobicy Engineering",
+        title: job.jobTitle,
+        company: job.companyName,
+        location: job.jobGeo || "Remote",
+        url: job.url,
+        tags: [...(job.jobIndustry ?? []), ...(job.jobType ?? []), job.jobLevel].filter(Boolean),
+        description: stripHtml(job.jobDescription ?? job.jobExcerpt ?? ""),
+        postedAt: job.pubDate,
+      })),
+  },
+  {
+    name: "Jobicy APAC Engineering",
+    type: "json",
+    url: "https://jobicy.com/api/v2/remote-jobs?count=100&geo=apac&industry=engineering",
+    parse: (json) =>
+      (json.jobs ?? []).map((job) => ({
+        source: "Jobicy APAC Engineering",
+        title: job.jobTitle,
+        company: job.companyName,
+        location: job.jobGeo || "Remote",
+        url: job.url,
+        tags: [...(job.jobIndustry ?? []), ...(job.jobType ?? []), job.jobLevel].filter(Boolean),
+        description: stripHtml(job.jobDescription ?? job.jobExcerpt ?? ""),
+        postedAt: job.pubDate,
+      })),
+  },
+  {
+    name: "We Work Remotely",
+    type: "text",
+    url: "https://weworkremotely.com/remote-jobs.rss",
+    parse: (xml) => parseWeWorkRemotelyRss(xml),
+  },
+  {
+    name: "WWR Full-Stack",
+    type: "text",
+    url: "https://weworkremotely.com/categories/remote-full-stack-programming-jobs.rss",
+    parse: (xml) => parseWeWorkRemotelyRss(xml),
+  },
+  {
+    name: "WWR Back-End",
+    type: "text",
+    url: "https://weworkremotely.com/categories/remote-back-end-programming-jobs.rss",
+    parse: (xml) => parseWeWorkRemotelyRss(xml),
+  },
+  {
+    name: "WWR Front-End",
+    type: "text",
+    url: "https://weworkremotely.com/categories/remote-front-end-programming-jobs.rss",
+    parse: (xml) => parseWeWorkRemotelyRss(xml),
+  },
+  {
+    name: "JobNet Myanmar Software Developer",
+    type: "text",
+    url: "https://www.jobnet.com.mm/q-software-developer-jobs",
+    parse: (html) => parseJobNetListings(html, "JobNet Myanmar Software Developer"),
+  },
+  {
+    name: "JobNet Myanmar IT Software",
+    type: "text",
+    url: "https://www.jobnet.com.mm/jobs/it-hardware-software/c-17",
+    parse: (html) => parseJobNetListings(html, "JobNet Myanmar IT Software"),
+  },
 ];
 
 function stripHtml(value) {
@@ -184,6 +292,17 @@ function stripHtml(value) {
     .replace(/&nbsp;/g, " ")
     .replace(/&amp;/g, "&")
     .replace(/\s+/g, " ")
+    .trim();
+}
+
+function decodeHtml(value) {
+  return String(value ?? "")
+    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&amp;/g, "&")
     .trim();
 }
 
@@ -207,6 +326,84 @@ function hasTerm(text, term) {
   }
 
   return new RegExp(`(^|[^a-z0-9])${escaped}([^a-z0-9]|$)`, "i").test(text);
+}
+
+function extractXmlTag(block, tag) {
+  const match = block.match(new RegExp(`<${tag}>([\\s\\S]*?)<\\/${tag}>`, "i"));
+  return match ? decodeHtml(match[1]).trim() : "";
+}
+
+function parseWeWorkRemotelyTitle(title) {
+  const cleanTitle = decodeHtml(title);
+  const separator = cleanTitle.indexOf(":");
+
+  if (separator === -1) {
+    return { company: "", role: cleanTitle };
+  }
+
+  return {
+    company: cleanTitle.slice(0, separator).trim(),
+    role: cleanTitle.slice(separator + 1).trim(),
+  };
+}
+
+function parseWeWorkRemotelyRss(xml) {
+  const items = String(xml).match(/<item>[\s\S]*?<\/item>/gi) ?? [];
+
+  return items.map((item) => {
+    const rawTitle = extractXmlTag(item, "title");
+    const { company, role } = parseWeWorkRemotelyTitle(rawTitle);
+    const description = stripHtml(decodeHtml(extractXmlTag(item, "description")));
+    const region = extractXmlTag(item, "region") || "Remote";
+    const category = extractXmlTag(item, "category");
+    const skills = extractXmlTag(item, "skills");
+    const type = extractXmlTag(item, "type");
+
+    return {
+      source: "We Work Remotely",
+      title: role || rawTitle,
+      company: company || "Unknown company",
+      location: region,
+      url: extractXmlTag(item, "link"),
+      tags: [category, skills, type].filter(Boolean),
+      description,
+      postedAt: extractXmlTag(item, "pubDate"),
+    };
+  });
+}
+
+function parseJobNetListings(html, sourceName) {
+  const items = String(html).match(/<div class="serp-item">[\s\S]*?<\/div>\s*<\/div>\s*<\/div>/gi) ?? [];
+
+  return items
+    .map((item) => {
+      const titleMatch = item.match(/class="search__job-title[^"]*"[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/i);
+      const subtitleMatch = item.match(/class="search__job-title2[^"]*"[^>]*>([\s\S]*?)<\/a>/i);
+      const companyMatch = item.match(/class="search__job-subtitle">[\s\S]*?<a[^>]*>([\s\S]*?)<\/a>/i);
+      const locationMatch = item.match(/<p class="search__job-location">[\s\S]*?<span>([\s\S]*?)<\/span>/i);
+
+      const rawTitle = titleMatch ? stripHtml(titleMatch[2]) : "";
+      const subTitle = subtitleMatch ? stripHtml(subtitleMatch[1]).replace(/^\(|\)$/g, "") : "";
+      const company = companyMatch ? stripHtml(companyMatch[1]) : "Unknown company";
+      const location = locationMatch ? stripHtml(locationMatch[1]) : "Myanmar";
+      const href = titleMatch ? titleMatch[1] : "";
+
+      if (!rawTitle || !href) {
+        return null;
+      }
+
+      return {
+        source: sourceName,
+        title: [rawTitle, subTitle].filter(Boolean).join(" "),
+        company,
+        location,
+        url: href.startsWith("http") ? href : `https://www.jobnet.com.mm${href}`,
+        tags: ["myanmar", "local board", "software"],
+        description: "",
+        postedAt: "",
+      };
+    })
+    .filter(Boolean);
 }
 
 function scoreJob(job) {
@@ -377,8 +574,20 @@ function isTargetFit(job, matched) {
     matched.includes("sql") ||
     matched.includes("sql server") ||
     matched.includes("typescript");
+  const hasTransferableStack =
+    matched.includes("react") &&
+    (matched.includes("typescript") ||
+      matched.includes("javascript") ||
+      matched.includes("backend") ||
+      matched.includes("full stack") ||
+      matched.includes("full-stack") ||
+      matched.includes("api") ||
+      matched.includes("rest") ||
+      matched.includes("sql") ||
+      matched.includes("sql server"));
 
   const hasTargetTitle = includesAny(title, profile.targetTitles);
+  const hasAdjacentTitle = includesAny(title, profile.adjacentTitles);
   const hasSoftwareTitle = includesAny(title, [
     "developer",
     "engineer",
@@ -394,7 +603,10 @@ function isTargetFit(job, matched) {
     return false;
   }
 
-  return hasPreferredStack && hasSoftwareTitle && (hasTargetTitle || hasFrontendOrDb);
+  return (
+    (hasPreferredStack && hasSoftwareTitle && (hasTargetTitle || hasFrontendOrDb)) ||
+    (hasAdjacentTitle && hasSoftwareTitle && hasTransferableStack)
+  );
 }
 
 function getSeniority(job) {
@@ -466,6 +678,49 @@ function hasDesiredCoreSignals(job) {
   );
 }
 
+function hasTransferableSignals(job) {
+  return (
+    job.matched.includes("react") &&
+    (job.matched.includes("typescript") ||
+      job.matched.includes("javascript") ||
+      job.matched.includes("backend") ||
+      job.matched.includes("full stack") ||
+      job.matched.includes("full-stack") ||
+      job.matched.includes("api") ||
+      job.matched.includes("rest") ||
+      job.matched.includes("sql") ||
+      job.matched.includes("sql server"))
+  );
+}
+
+function isReviewFit(job) {
+  const title = normalize(job.title);
+  const haystack = normalize(
+    [job.title, job.company, job.location, job.tags.join(" "), job.description].join(" "),
+  );
+  const looksSenior = includesAny(haystack, profile.seniorityPenalties);
+  const explicitlyPreferredLevel = includesAny(haystack, profile.preferredSeniority);
+  const avoidOnly = includesAny(haystack, profile.avoidIfOnly) && !hasDesiredCoreSignals(job);
+
+  if (!job.relevant || job.track !== "Review") {
+    return false;
+  }
+
+  if (includesAny(title, profile.hardTitleExclusions)) {
+    return false;
+  }
+
+  if (avoidOnly) {
+    return false;
+  }
+
+  if (looksSenior && !explicitlyPreferredLevel) {
+    return false;
+  }
+
+  return hasDesiredCoreSignals(job) || hasTransferableSignals(job);
+}
+
 function dedupeJobs(jobs) {
   const seen = new Set();
   const result = [];
@@ -484,6 +739,11 @@ function dedupeJobs(jobs) {
 }
 
 async function fetchSource(source) {
+  if (source.type === "text") {
+    const text = await fetchText(source);
+    return source.parse(text);
+  }
+
   const json = await fetchJson(source);
   return source.parse(json);
 }
@@ -505,6 +765,29 @@ async function fetchJson(source) {
   } catch (error) {
     try {
       return await fetchJsonWithLocalCertificateFallback(source);
+    } catch (fallbackError) {
+      throw new Error(`${error.message}; fallback failed: ${fallbackError.message}`);
+    }
+  }
+}
+
+async function fetchText(source) {
+  try {
+    const response = await fetch(source.url, {
+      headers: {
+        "User-Agent": "NightEulePortfolioJobFinder/1.0",
+        Accept: "application/rss+xml, application/xml, text/xml, text/plain;q=0.9, */*;q=0.8",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`${source.name} returned ${response.status}`);
+    }
+
+    return response.text();
+  } catch (error) {
+    try {
+      return await fetchTextWithLocalCertificateFallback(source);
     } catch (fallbackError) {
       throw new Error(`${error.message}; fallback failed: ${fallbackError.message}`);
     }
@@ -549,29 +832,49 @@ async function fetchJsonWithLocalCertificateFallback(source) {
   });
 }
 
+async function fetchTextWithLocalCertificateFallback(source) {
+  return new Promise((resolve, reject) => {
+    const request = https.get(
+      source.url,
+      {
+        rejectUnauthorized: false,
+        headers: {
+          "User-Agent": "NightEulePortfolioJobFinder/1.0",
+          Accept: "application/rss+xml, application/xml, text/xml, text/plain;q=0.9, */*;q=0.8",
+          "Accept-Encoding": "identity",
+        },
+      },
+      (response) => {
+        let body = "";
+
+        response.setEncoding("utf8");
+        response.on("data", (chunk) => {
+          body += chunk;
+        });
+        response.on("end", () => {
+          if (!response.statusCode || response.statusCode >= 400) {
+            reject(new Error(`${source.name} returned ${response.statusCode}`));
+            return;
+          }
+
+          resolve(body);
+        });
+      },
+    );
+
+    request.on("error", reject);
+  });
+}
+
 function renderReport(jobs, failures) {
   const now = new Date().toISOString().slice(0, 10);
   const scoredJobs = toScoredJobs(jobs);
   const topJobs = scoredJobs.filter((job) => job.relevant && job.targetFit && job.score >= 24).slice(0, 20);
-  const reviewJobs = scoredJobs
-    .filter(
-      (job) =>
-        job.relevant &&
-        job.track === "Review" &&
-        hasDesiredCoreSignals(job) &&
-        !includesAny(normalize(job.title), profile.hardTitleExclusions),
-    )
-    .slice(0, 15);
+  const reviewJobs = scoredJobs.filter(isReviewFit).slice(0, 15);
   const relevantCount = scoredJobs.filter((job) => job.relevant).length;
   const targetFitCount = scoredJobs.filter((job) => job.targetFit).length;
   const strongCount = scoredJobs.filter((job) => job.track === "Strong").length;
-  const reviewCount = scoredJobs.filter(
-    (job) =>
-      job.relevant &&
-      job.track === "Review" &&
-      hasDesiredCoreSignals(job) &&
-      !includesAny(normalize(job.title), profile.hardTitleExclusions),
-  ).length;
+  const reviewCount = scoredJobs.filter(isReviewFit).length;
 
   const rows = topJobs
     .map((job, index) => {
@@ -645,7 +948,7 @@ function toCsvValue(value) {
 
 function renderCsv(jobs) {
   const scoredJobs = toScoredJobs(jobs).filter(
-    (job) => job.relevant && job.track !== "Weak" && (job.track === "Strong" || hasDesiredCoreSignals(job)),
+    (job) => (job.track === "Strong" && job.relevant) || isReviewFit(job),
   );
   const header = [
     "Track",
@@ -715,13 +1018,7 @@ async function main() {
   const relevantCount = scoredJobs.filter((job) => job.relevant).length;
   const targetFitCount = scoredJobs.filter((job) => job.targetFit).length;
   const strongCount = scoredJobs.filter((job) => job.track === "Strong").length;
-  const reviewCount = scoredJobs.filter(
-    (job) =>
-      job.relevant &&
-      job.track === "Review" &&
-      hasDesiredCoreSignals(job) &&
-      !includesAny(normalize(job.title), profile.hardTitleExclusions),
-  ).length;
+  const reviewCount = scoredJobs.filter(isReviewFit).length;
 
   console.log(
     `Fetched ${jobs.length} raw remote jobs; ${relevantCount} software-relevant; ${targetFitCount} target-fit; ${strongCount} strong; ${reviewCount} review. Report written to ${outputPath} and ${csvPath}`,
