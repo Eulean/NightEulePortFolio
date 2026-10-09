@@ -1,6 +1,7 @@
 import { ContactForm } from "@/components/contact-form";
 import { SectionHeading } from "@/components/section-heading";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
 import {
   capabilities,
   contactMeta,
@@ -15,96 +16,68 @@ import {
 
 export default function Home() {
   return (
-    <main className="portfolio-shell">
-      <header className="site-nav">
-        <a href="#top" className="brand" aria-label="NightEule home">
-          <img
-            src="/brand/night-eule-wordmark.svg"
-            alt=""
-            className="brand-logo brand-logo-light"
-            width="1028"
-            height="280"
-          />
-          <img
-            src="/brand/night-eule-wordmark-dark.svg"
-            alt=""
-            aria-hidden="true"
-            className="brand-logo brand-logo-dark"
-            width="1028"
-            height="280"
-          />
-        </a>
-        <div className="nav-actions">
-          <nav>
-            <a href="#work">Work</a>
-            <a href="#services">Services</a>
-            <a href="#about">About</a>
-            <a href="/apply-assistant">Apply Assistant</a>
-            <a href="/resume">Resume</a>
-            <a href="#contact">Contact</a>
-          </nav>
-          <ThemeToggle />
-        </div>
-      </header>
+    <main className="portfolio-shell" id="main-content">
+      <SiteHeader current="home" />
 
       <section className="hero" id="top">
         <div className="hero-copy">
-          <p className="eyebrow">Backend-focused full-stack developer</p>
+          <p className="eyebrow">Backend-focused full-stack developer · Yangon, Myanmar</p>
           <div className="hero-kicker-row">
             <span className="hero-kicker hero-kicker-strong">Available for remote roles</span>
-            <span className="hero-kicker">Now booking freelance web projects</span>
+            <span className="hero-kicker">Open for selected freelance projects</span>
           </div>
           <h1>Wai Phyo Oo</h1>
           <p className="hero-statement">
-            Building enterprise workflows, reporting systems, and fast business websites
-            with a calm, reliable delivery style.
+            Reliable software for real business workflows.
           </p>
           <p className="hero-support">
-            I build practical software for real business use, from internal workflow systems to
-            modern websites that are easy to launch, maintain, and grow.
+            I build .NET APIs, React interfaces, reporting systems, and internal tools that turn
+            complex operations into software teams can trust and maintain.
           </p>
           <div className="hero-actions">
             <a href="#work" className="button button-primary">
-              View Projects
+              View Selected Work
             </a>
-            <a href="#contact" className="button button-secondary">
-              Start a Project
+            <a href="/resume" className="button button-secondary">
+              View Resume
             </a>
           </div>
+          <p className="hero-client-link">
+            Need a custom website or business system? <a href="#contact">Start a project</a>
+          </p>
           <ul className="proof-strip" aria-label="Core proof strip">
             {proofStrip.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
-          <div className="hero-trust-row">
-            <div className="hero-trust-card">
-              <p className="hero-trust-label">Work focus</p>
-              <p>Enterprise workflows, reporting systems, and full-stack business tools</p>
-            </div>
-            <div className="hero-trust-card">
-              <p className="hero-trust-label">Freelance focus</p>
-              <p>Business websites, e-commerce builds, custom projects, and monthly support</p>
-            </div>
-          </div>
         </div>
 
-        <aside className="signal-panel">
-          <div>
-            <p className="signal-label">Stack</p>
-            <p className="signal-value">.NET / React / SQL / Go</p>
+        <aside className="signal-panel" aria-label="Professional snapshot">
+          <div className="signal-panel-heading">
+            <p>Professional snapshot</p>
+            <span>Remote-ready</span>
           </div>
-          <div>
-            <p className="signal-label">Domains</p>
-            <p className="signal-value">Enterprise systems, reporting workflows, POS, document tools</p>
-          </div>
-          <div>
-            <p className="signal-label">Work mode</p>
-            <p className="signal-value">Remote roles, freelance projects, long-term support</p>
-          </div>
-          <div>
-            <p className="signal-label">Selected signals</p>
-            <p className="signal-value">Tradenet, Shwe-Digits workflows, POS systems, PDF and Excel exports</p>
-          </div>
+          <dl className="signal-list">
+            <div>
+              <dt>Core stack</dt>
+              <dd>.NET 8 · ASP.NET Core · React · SQL</dd>
+            </div>
+            <div>
+              <dt>Strongest work</dt>
+              <dd>Business workflows, authentication, reporting, and exports</dd>
+            </div>
+            <div>
+              <dt>Delivery range</dt>
+              <dd>Backend APIs through polished admin and client interfaces</dd>
+            </div>
+            <div>
+              <dt>Selected proof</dt>
+              <dd>Enterprise trade systems, POS, document tools, and tested backends</dd>
+            </div>
+          </dl>
+          <a href="/resume" className="text-link signal-link">
+            Read full resume
+          </a>
         </aside>
       </section>
 
@@ -256,7 +229,13 @@ export default function Home() {
             {contactMeta.map((item) => (
               <div key={item.label} className="contact-meta-row">
                 <p>{item.label}</p>
-                <span>{item.value}</span>
+                {item.href ? (
+                  <a href={item.href} target={item.href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
+                    {item.value}
+                  </a>
+                ) : (
+                  <span>{item.value}</span>
+                )}
               </div>
             ))}
           </div>
@@ -276,6 +255,8 @@ export default function Home() {
 
         <ContactForm />
       </section>
+
+      <SiteFooter />
     </main>
   );
 }

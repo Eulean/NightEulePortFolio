@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { SiteHeader } from "@/components/site-header";
 import { getApplicationPacks } from "@/lib/application-assistant";
 
 export const metadata: Metadata = {
   title: "Apply Assistant | Wai Phyo Oo",
   description:
     "Tailored application packs for current job matches, including email drafts, CV focus notes, and manual apply checklists.",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 function toMailto(subject: string, body: string) {
@@ -18,37 +22,8 @@ export default async function ApplyAssistantPage() {
   const manualApply = packs.filter((pack) => pack.lane === "Manual apply");
 
   return (
-    <main className="portfolio-shell apply-shell">
-      <header className="site-nav">
-        <a href="/" className="brand" aria-label="NightEule home">
-          <img
-            src="/brand/night-eule-wordmark.svg"
-            alt=""
-            className="brand-logo brand-logo-light"
-            width="1028"
-            height="280"
-          />
-          <img
-            src="/brand/night-eule-wordmark-dark.svg"
-            alt=""
-            aria-hidden="true"
-            className="brand-logo brand-logo-dark"
-            width="1028"
-            height="280"
-          />
-        </a>
-        <div className="nav-actions">
-          <nav>
-            <a href="/#work">Work</a>
-            <a href="/#services">Services</a>
-            <a href="/#about">About</a>
-            <a href="/apply-assistant">Apply Assistant</a>
-            <a href="/resume">Resume</a>
-            <a href="/#contact">Contact</a>
-          </nav>
-          <ThemeToggle />
-        </div>
-      </header>
+    <main className="portfolio-shell apply-shell" id="main-content">
+      <SiteHeader current="apply" />
 
       <section className="apply-hero">
         <div>

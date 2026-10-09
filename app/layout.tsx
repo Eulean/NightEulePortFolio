@@ -72,6 +72,9 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className={`${manrope.variable} ${sourceSerif.variable}`}>
+        <a className="skip-link" href="#main-content">
+          Skip to main content
+        </a>
         {children}
         <Analytics />
       </body>

@@ -188,10 +188,10 @@ export const stackGroups = [
 ] as const;
 
 export const contactMeta = [
-  { label: "Email", value: "eulen9t5@gmail.com" },
-  { label: "Telegram", value: "@nighteule39" },
-  { label: "GitHub", value: "github.com/Eulean" },
-  { label: "Availability", value: "Remote roles and freelance web projects" },
+  { label: "Email", value: "eulen9t5@gmail.com", href: "mailto:eulen9t5@gmail.com" },
+  { label: "Telegram", value: "@nighteule39", href: "https://t.me/nighteule39" },
+  { label: "GitHub", value: "github.com/Eulean", href: "https://github.com/Eulean" },
+  { label: "Availability", value: "Remote roles and freelance web projects", href: "" },
 ];
 
 export const contactFormOptions = {
